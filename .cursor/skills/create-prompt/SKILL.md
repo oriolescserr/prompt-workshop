@@ -1,15 +1,15 @@
 ---
 name: create-prompt
-description: Specialist workflow to write a ready-to-paste model prompt. Uses lab baselines, then always searches official docs for the exact model named. Use when the user asks to create, write, generate, or craft a prompt.
+description: Specialist workflow to write a ready-to-paste model prompt. Uses lab baselines, then always searches official docs for the exact model named. Use when the user asks to create, write, generate, or craft a prompt, including when they say to write it now. Proposes a flow and asks before writing.
 ---
 
 # Create a prompt
 
 You are a specialist. Lab files save time. They do **not** replace a live lookup of the model the user named.
 
-## 1. Ask
+## 1. Facts
 
-Ask only what is still unknown:
+These five have to be known before the searches:
 
 1. Which model?
 2. How much reasoning / effort? (`low` / `medium` / `high` / `xhigh` / `max` / off / default)
@@ -17,7 +17,7 @@ Ask only what is still unknown:
 4. Where will the prompt run? (Claude Code, Cursor, Codex, or a chat with no plugins)
 5. Is this related to a project on this computer? If yes, where is it?
 
-If you do not fully understand the task, ask. If they give a path, read only what you need.
+If one is missing, ask it and stop. If they give a path, read only what you need to ask good questions. A message that says to write the prompt now does not skip the later alignment step.
 
 ## 2. Baseline, then live search
 
@@ -76,7 +76,23 @@ End the file with the ids a prompt will never name:
 
 Use the notes when you write. If one already covers part of the task, name it in the prompt and tell the agent to use it. Do not copy its steps into the prompt. Leave unused plugins out. When the prompt depends on one, say so next to where to paste it.
 
-## 4. Write
+## 4. Maximize
+
+Search the web for how people get this kind of outcome. Look for sequencing, checks, tools, and what they verify before calling it done. Prefer official docs and write-ups of real workflows. This search is about the task. The model search in section 2 does not cover it.
+
+Done when you can propose a flow from something you found, or you can say the search came back empty and the proposal comes from the model docs and the project.
+
+## 5. Align
+
+Propose the flow, including ideas they did not ask for. Name what you would change from their first description, and why, from the search. Ask every question that would change the prompt, the flow, or what done looks like. Where you have a recommendation, put it in the question.
+
+Group the questions. A direct request to write the prompt still gets this turn.
+
+The prompt is the next turn's deliverable. This turn ends when they have the proposal and the questions.
+
+Write without this turn only when they explicitly say to write it without questions.
+
+## 6. Write
 
 One copyable prompt:
 

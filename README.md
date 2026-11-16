@@ -6,13 +6,15 @@ Say what you want in natural language. The agent turns that into a clear, ready-
 
 ## How it works
 
-1. **Ask**: model, reasoning/effort, where the prompt will run, what it should do, and whether a project on this computer is involved (and its path).
+1. **Facts**: model, reasoning/effort, where the prompt will run, what it should do, and whether a project on this computer is involved (and its path).
 2. **Baseline**: read a short lab note for that family (Claude, GPT, Gemini, Grok, DeepSeek, Cursor, Mistral) so the draft is not starting from zero.
 3. **Search**: look up current official prompting, thinking, and effort docs for the named snapshot. Lab notes lose to live docs.
 4. **Plugins**: compare the enabled plugins of that host (global and the target project) with its own file in `.host-plugins/` (`claude-code.md`, `codex.md`, `cursor.md`). The folder is gitignored. If the file is missing, it is created. New plugins a prompt might name are read once and noted (what they do, when to name them). A plugin that is only for the person using the host, such as an image preview, is listed by name at the end of the file. Removed plugins are deleted. A plugin already noted is not read again.
-5. **Write**: one copyable prompt in **English** (unless you ask for another language), plus where to paste it and which reasoning setting to use.
+5. **Maximize**: search how people get this kind of outcome (sequence, checks, tools) and propose a flow, including ideas you did not ask for.
+6. **Align**: ask everything that would change the prompt, the flow, or what done looks like. Saying "write the prompt" still gets this step. The prompt comes after you answer.
+7. **Write**: one copyable prompt in **English** (unless you ask for another language), plus where to paste it and which reasoning setting to use.
 
-If anything about the task would change the prompt, the agent asks instead of guessing.
+A change to an existing prompt gets the same kind of search first: the best edit to the wording and to the flow. If that differs from the edit you named, the agent proposes it and waits.
 
 ## Use it
 
@@ -22,7 +24,7 @@ In Cursor, with this folder as the workspace:
 - *Write a prompt that …*
 - *Tighten this prompt for Grok 4.6 high*
 
-You will be asked for the target model and effort if you omit them. If the work is tied to another repo, give the path so the prompt can be grounded in real files.
+You will be asked for the target model and effort if you omit them, and then for anything that would change the prompt or the flow, even when you already said to write it. If the work is tied to another repo, give the path so the prompt can be grounded in real files.
 
 ## What you get back
 
@@ -35,7 +37,7 @@ You will be asked for the target model and effort if you omit them. If the work 
 
 ## Repository layout
 
-```text
+```texttot 
 .cursor/rules/
   prompt-specialist.mdc      # this repo only writes prompts
   ask-dont-guess.mdc         # model, effort, task, project path

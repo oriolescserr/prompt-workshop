@@ -1,11 +1,11 @@
 ---
-description: Ask the user instead of assuming model, reasoning, task details, or project path.
+description: Ask the user instead of assuming model, reasoning, task details, project path, or the flow.
 alwaysApply: true
 ---
 
 # Ask. Do not guess.
 
-Before writing a prompt, you must know:
+Before any prompt work, you must know:
 
 - **Which model** will run it
 - **How much reasoning / effort** (or that they want the default)
@@ -13,13 +13,14 @@ Before writing a prompt, you must know:
 - **What the prompt is about** and what the model should do
 - **Whether a project on this computer is involved**, and **where it is**
 
-If any of those are missing or fuzzy, ask a short question. Same for constraints, output format, tools, tone, or audience if they would change the prompt.
+Those five facts are the start. They do not finish the questions. Follow the alignment step in the create-prompt or refine-prompt skill: propose a flow, and ask everything that would change the prompt, the flow, or what done looks like.
+
+A request to write the prompt means ask those questions, then wait.
 
 ```text
 ❌ BAD
-Assume Claude, high effort, and that they mean this repo.
+They named Claude, high effort, and a path, so write the prompt in the same turn.
 
 ✅ GOOD
-"Which model should this prompt run on, how much reasoning, and where will you paste it?
-Is this for a project on this computer? If yes, what is the path?"
+"Home stays the reference, and the sheets can become pages. I would inventory every surface, set one spacing scale, then apply it in clusters and review the whole app last. Two things would change the prompt: do you want a check you approve before it continues, and may it rewrite DESIGN.md?"
 ```
