@@ -1,74 +1,134 @@
-# Prompt Generator
+<div align="center">
 
-A Cursor workspace to structure ideas you already have into prompts that fit the model you will run them on.
+<h1>Prompt Generator</h1>
 
-Say what you want in natural language. The agent turns that into a clear, ready-to-paste prompt, following the **official prompting guides** for the exact model you named. This is not an app and not a catalog of every model version.
+<h3>Your idea, shaped for the model that will run it.</h3>
+
+A Cursor workspace that researches your target model, agrees the plan with you,</br> then writes and reviews a ready-to-paste prompt.
+
+**Designed to be run by mid-tier models**. You do not need a top-tier model to use it.
+
+<br>
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-1F5C86.svg)](./LICENSE)
+[![Runs in Cursor](https://img.shields.io/badge/runs%20in-Cursor-1E1B17.svg)](https://cursor.com)
+
+[Why](#why-prompt-generator)&nbsp;&nbsp;|&nbsp;&nbsp;[How it works](#how-it-works)&nbsp;&nbsp;|&nbsp;&nbsp;[Quick start](#quick-start)&nbsp;&nbsp;|&nbsp;&nbsp;[What you get](#what-you-get)&nbsp;&nbsp;|&nbsp;&nbsp;[Models](#supported-models)&nbsp;&nbsp;|&nbsp;&nbsp;[Layout](#repository-layout)
+
+</div>
+
+---
+
+## Why Prompt Generator
+
+Each model family wants its prompts written differently, and the advice changes with every release. This workspace turns what you say in plain language into a prompt that fits the exact model you name.
+
+- **Researched, not remembered.** The agent looks up the vendor's current documentation for your model, and how people get the kind of result you want.
+- **Agreed before written.** You see a proposed flow and answer questions first, so the prompt reflects your decisions.
+- **Reviewed before delivery.** Every prompt is checked against a fixed list, and you are told what had to be fixed.
+
+The instructions are written for mid-tier models: numbered steps with clear stop points, fixed output formats, and a review before delivery, so less is left to the model's judgment. This is about the model that runs the generator; the prompt it writes can target any model.
+
+It is a set of Cursor rules and skills, not an application: there is nothing to build or install.
 
 ## How it works
 
-1. **Facts**: model, reasoning/effort, where the prompt will run, what it should do, and whether a project on this computer is involved (and its path).
-2. **Baseline**: read a short lab note for that family (Claude, GPT, Gemini, Grok, DeepSeek, Cursor, Mistral) so the draft is not starting from zero.
-3. **Search**: look up current official prompting, thinking, and effort docs for the named snapshot. Lab notes lose to live docs.
-4. **Plugins**: compare the enabled plugins of that host (global and the target project) with its own file in `.host-plugins/` (`claude-code.md`, `codex.md`, `cursor.md`). The folder is gitignored. If the file is missing, it is created. New plugins a prompt might name are read once and noted (what they do, when to name them). A plugin that is only for the person using the host, such as an image preview, is listed by name at the end of the file. Removed plugins are deleted. A plugin already noted is not read again.
-5. **Maximize**: search how people get this kind of outcome (sequence, checks, tools) and propose a flow, including ideas you did not ask for.
-6. **Align**: ask everything that would change the prompt, the flow, or what done looks like. Saying "write the prompt" still gets this step. The prompt comes after you answer.
-7. **Write**: one copyable prompt in **English** (unless you ask for another language), plus where to paste it and which reasoning setting to use.
+```mermaid
+flowchart LR
+    A[Facts] --> B[Research] --> C[Proposal and questions]
+    C -->|your answers| D[Write] --> E[Review] --> F[Delivery]
+    E -->|a check fails| D
+```
 
-A change to an existing prompt gets the same kind of search first: the best edit to the wording and to the flow. If that differs from the edit you named, the agent proposes it and waits.
+| Step | What happens |
+| --- | --- |
+| **1. Facts** | Target model, effort, where the prompt will run, what it should do, and any local project involved. Everything missing is asked at once, as clickable questions when the host supports them. |
+| **2. Model guidance** | The official page for the family, from `sources.md`, then the live documentation for the exact model. |
+| **3. Plugins** | The enabled plugins of the host that will run the prompt, checked fresh each time, so it can name the ones that already cover part of the task. |
+| **4. Task research** | Order of work, tools, common failures, and how to check the result. |
+| **5. Align** | A short proposed flow with the pages it comes from, then up to four clickable questions with a recommended answer. |
+| **6. Write and review** | One prompt, checked and corrected before you see it. |
 
-## Use it
+Asking to "write it now" still gets the alignment step. To skip it, say explicitly that you want the prompt without questions; the assumptions made are then listed.
 
-In Cursor, with this folder as the workspace:
+**Refining an existing prompt** follows the same research. The agent diagnoses the prompt first, and if the best change differs from the one you asked for, it proposes it and waits.
 
-- *Create a prompt for …*
-- *Write a prompt that …*
-- *Tighten this prompt for Grok 4.6 high*
+## Quick start
 
-You will be asked for the target model and effort if you omit them, and then for anything that would change the prompt or the flow, even when you already said to write it. If the work is tied to another repo, give the path so the prompt can be grounded in real files.
+### Requirements
 
-## What you get back
+- [Cursor](https://cursor.com), with network access so the agent can read vendor documentation
+- The name of the model that will run your prompt
 
-- Target model and effort
-- Official pages used **in that session**
-- A single prompt to paste
-- How to set thinking / reasoning in the product or API
-- The plugins that prompt names, or a one-line reason when it names none
-- A short numbered expected result in the language you used in chat (what you should have once that prompt has been run)
+### Setup
+
+```bash
+git clone https://github.com/oriolescserr/prompt-generator.git
+```
+
+Open the `prompt-generator` folder as your Cursor workspace, pick a mid-tier model, and set its effort to `high` in the model picker.
+
+### Ask
+
+```text
+Create a prompt for …
+Write a prompt that …
+Tighten this prompt for <model> <effort>: …
+```
+
+If your task belongs to another repository, give its path so the prompt is grounded in real files.
+
+## What you get
+
+| Item | Detail |
+| --- | --- |
+| **Model and effort** | Which setting to use, and where to set it in the product or API |
+| **Sources** | The pages opened during that session |
+| **Review** | One line with the result, plus what had to be fixed or is still unmet |
+| **Prompt** | One copyable block, in English unless you ask for another language |
+| **Where to paste it** | Including any files or data to attach |
+| **Plugins** | Each plugin the prompt names and why, or why it names none |
+| **Expected result** | Up to five plain lines, in the language you chatted in |
+
+Refinements also explain what changed and why.
+
+### The review
+
+| Check | Passes when |
+| --- | --- |
+| Self-contained | Nothing has to be guessed by a reader who only has the prompt |
+| Agreed decisions | Your answers and the accepted proposals are all in it |
+| Done is checkable | Every completion criterion says how to verify it |
+| No weak spot | The poorest result that would still obey the prompt is ruled out |
+| No conflicts | No contradictions, repetitions, or vague criteria |
+| Fits the model | Structure and effort setting match the documentation |
+| Lean | Every sentence changes what the model does |
+| Nothing lost | Everything you asked for is in it, unless you agreed to drop it |
+
+The full definition is in [`quality.md`](./.cursor/skills/create-prompt/quality.md).
+
+## Supported models
+
+The main model families have their official pages listed in [`sources.md`](./.cursor/skills/create-prompt/sources.md), with a few technical traps to check. Other providers work too, from the live search.
+
+No prompting advice is stored per model: it changes with every release, so it is read from the vendor each time.
 
 ## Repository layout
 
-```texttot 
-.cursor/rules/
-  prompt-specialist.mdc      # this repo only writes prompts
-  ask-dont-guess.mdc         # model, effort, task, project path
-  baselines-then-search.mdc  # lab notes ≠ live model spec
-
-.cursor/skills/
-  create-prompt/             # new prompts
-    SKILL.md
-    labs/                    # family patterns (not version lists)
-  refine-prompt/             # rewrite an existing prompt
-
-.host-plugins/               # local plugin notes, gitignored, one file per host
+```text
+.cursor/
+  rules/
+    prompt-specialist.mdc    # routing, language, rules for every turn
+  skills/
+    create-prompt/           # new prompts
+      SKILL.md
+      plugins.md             # checking the host's plugins
+      quality.md             # prompt contents, review, delivery format
+      sources.md             # official pages and traps per model family
+    refine-prompt/           # changes to existing prompts
+      SKILL.md
 ```
 
-### Lab baselines
+## License
 
-| File | Family |
-| --- | --- |
-| `labs/anthropic.md` | Claude |
-| `labs/openai.md` | GPT / Codex |
-| `labs/google.md` | Gemini |
-| `labs/xai.md` | Grok / Grok Build |
-| `labs/deepseek.md` | DeepSeek |
-| `labs/cursor.md` | Composer, Cursor Grok, Cloud Agents |
-| `labs/mistral.md` | Mistral |
-
-These files hold **stable prompting style** (structure, what belongs in the prompt vs an effort slider, common failure modes). They do not pin model IDs, default effort, or thinking APIs. Those change; the live search is required.
-
-For an unknown provider, the lab step is skipped and the agent searches only.
-
-## Requirements
-
-- [Cursor](https://cursor.com) with network access so the agent can fetch vendor docs
-- A named target model (Claude, GPT, Gemini, Grok, Composer, DeepSeek, Mistral, or another model)
+Released under the [MIT License](./LICENSE). Copyright © 2026 Oriol Escolà Serra.

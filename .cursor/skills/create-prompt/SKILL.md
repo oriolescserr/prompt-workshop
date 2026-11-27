@@ -1,111 +1,90 @@
 ---
 name: create-prompt
-description: Specialist workflow to write a ready-to-paste model prompt. Uses lab baselines, then always searches official docs for the exact model named. Use when the user asks to create, write, generate, or craft a prompt, including when they say to write it now. Proposes a flow and asks before writing.
+description: Specialist workflow to write a ready-to-paste model prompt. Searches official docs for the exact model named, proposes a flow and asks, then writes and reviews the prompt. Use when the user asks to create, write, generate, or craft a prompt, including when they say to write it now.
 ---
 
 # Create a prompt
 
-You are a specialist. Lab files save time. They do **not** replace a live lookup of the model the user named.
+## Where are you?
+
+Check this first, every turn.
+
+| Situation | Do |
+| --- | --- |
+| A fact from step 1 is missing | Step 1 |
+| All facts known, no proposal sent yet | Steps 2 to 5 |
+| The user answered your proposal | Step 6. If an answer changes the model, host, or task, redo the affected steps first |
+| The user wants a change to the prompt you delivered | Step 6 again, including the review |
 
 ## 1. Facts
 
-These five have to be known before the searches:
-
-1. Which model?
+1. Which model will run the prompt?
 2. How much reasoning / effort? (`low` / `medium` / `high` / `xhigh` / `max` / off / default)
-3. What should the prompt make that model do? What does done look like?
-4. Where will the prompt run? (Claude Code, Cursor, Codex, or a chat with no plugins)
-5. Is this related to a project on this computer? If yes, where is it?
+3. What should the prompt make that model do, and what does done look like?
+4. Where will it run? (Claude Code, Cursor, Codex, or a chat with no plugins)
+5. Is a project on this computer involved? If yes, where is it?
 
-If one is missing, ask it and stop. If they give a path, read only what you need to ask good questions. A message that says to write the prompt now does not skip the later alignment step.
+The model, the effort, where it will run, and the project path come only from the user's messages. Do not take them from this machine's settings, installed tools, config files, or the folders you can find, even when only one answer looks likely. A project name is not a path.
 
-## 2. Baseline, then live search
+Once they gave a path, read what you need to understand the task and to ask good questions. Do not ask what the project's files already answer about the task.
 
-1. Read the matching file under [labs/](labs/):
-   - Claude / Anthropic → [labs/anthropic.md](labs/anthropic.md)
-   - GPT / OpenAI / Codex → [labs/openai.md](labs/openai.md)
-   - Gemini / Google → [labs/google.md](labs/google.md)
-   - Grok / xAI / Grok Build → [labs/xai.md](labs/xai.md)
-   - DeepSeek → [labs/deepseek.md](labs/deepseek.md)
-   - Composer / Cursor Cloud Agent / Cursor Grok → [labs/cursor.md](labs/cursor.md)
-   - Mistral → [labs/mistral.md](labs/mistral.md)
-   - Unknown family → skip the lab file
-2. **Search the internet for that exact model** (prompting guide, thinking/effort, migration). Prefer the vendor site. Training data and lab files go stale.
-3. If live docs conflict with the lab file, the live docs win. If you still have doubts, ask the user.
+If any fact is missing, ask for all the missing ones at once, as the rule on clickable questions says. If no answer comes back, end your turn. When the format or tone of the result matters, ask in the same message for an example they like.
 
-## 3. Plugins on this computer
+Done when all five are known.
 
-Do this after the model and the host are known, before writing. The plugins are the ones for **the host that will run the prompt**, on this machine. Not the plugins of the session that is writing the prompt.
+## 2. Model guidance
 
-A plain chat or API call has no local plugins. Skip this step.
+1. Read [sources.md](sources.md) for the family's official page and its traps. If the prompt will run in Cursor, read its Cursor section too.
+2. Search the web for that exact model: prompting guide, effort or thinking settings, migration notes. Prefer the vendor's site. Open the pages; a search snippet is not enough.
+3. Where a live page disagrees with `sources.md`, follow the live page.
 
-Notes live in `.host-plugins/`, one file per host: `.host-plugins/claude-code.md`, `.host-plugins/codex.md`, `.host-plugins/cursor.md`. The folder is gitignored. Slug the host name in lowercase with hyphens. If the folder or that host's file is missing, create them. Do not open or edit the other hosts' files. Do not commit the folder, and do not copy it into the repo.
+If you cannot search or open a page, tell the user, and say the prompt will rest on `sources.md` and your training data.
 
-List the enabled plugins for this run: global, plus the target project when there is one. Ignore marketplace entries that are not installed.
+Done when you have opened a page for that model, or have said that you could not.
 
-- **Claude Code.** From the target project directory, run `claude plugin list --json`. Keep rows with `enabled: true`. `user` is global; `project` and `local` are that repo; `skills-dir` and `synced` count. If the command fails, read `enabledPlugins` in `~/.claude/settings.json`, `<project>/.claude/settings.json`, and `<project>/.claude/settings.local.json`. A later file overrides the same id. Install paths are in `~/.claude/plugins/installed_plugins.json`.
-- **Cursor.** Read `plugin.json` name and description under `~/.cursor/plugins`, and skill descriptions in the target project's `.cursor/skills`. User skills Cursor loads count as global.
-- **Codex.** Read `~/.codex/plugins` and `~/.codex/skills`, plus plugin config in the target project. Do not invent a list command.
-- **Any other host.** Search that product's config and plugin folders. If you cannot find them, ask. Do not guess a path.
+## 3. Plugins
 
-Compare that list with this host's file only. Match on id, scope, and project path. Leave other projects' entries in that file as they are.
+If the prompt will run in a plain chat or an API call, skip this step. Otherwise read [plugins.md](plugins.md) now and follow it.
 
-- Already listed, still enabled: keep it. Do not open the plugin again. A name on the list at the end counts as listed.
-- New, and a generated prompt might name it: read its manifest and the descriptions of its skills, then add an entry. Write what it does from those texts. Write when a prompt should name it. Do not guess either one.
-- New, and only the person at the keyboard uses it (a preview, a pet, or other host chrome): a generated prompt would never name it. Add the id to `## Not used in prompts` at the end of the file. No explanation.
-- Gone from this slice (global, or this project): delete the entry or the id.
+Done when you know which enabled plugins, if any, the prompt should name.
 
-One entry looks like this:
+## 4. How people get this result
+
+Search the web for what has worked for other people who wanted this kind of outcome: order of work, tools, common failures, and what they check before calling it done. Prefer official docs and write-ups of real workflows. This search is about the task; the search in step 2 was about the model.
+
+Done when you have an order of work and a way to check the result, each from a page you opened, or you can say the search came back empty and the proposal comes from the model docs and the project.
+
+## 5. Propose and ask
+
+A direct request to write the prompt still gets this step. Skip it only when the user said in so many words to ask nothing ("without questions", "sense preguntes"); then go to step 6 and list your assumptions in the delivery. Hurry or impatience ("write it now", "ves per feina", "no weird questions") does not skip it. If in doubt, ask.
+
+The exception never covers step 1.
+
+First send this, in the user's language, in 20 lines or fewer:
 
 ```text
-### plugin-id
-- scope: user | project | local
-- project: path or -
-- version: version or -
-- what: one or two sentences from the plugin itself
-- use when: the kind of prompt that should name it
+**Proposed flow**
+<at most 5 steps, one line each, including how the result is checked>
+
+**Changes to your request**
+<at most 3 lines, each with its reason; or "none">
+
+**Where the flow comes from**
+<at most 4 lines: link — the idea you took from it>
 ```
 
-End the file with the ids a prompt will never name:
+Under "Where the flow comes from", list only pages you opened in step 4 and used. If the search gave nothing useful, or you could not search, say that in one line instead; do not fill it with model docs or links you did not open.
 
-```text
-## Not used in prompts
+Leave out plugins and effort settings; they belong in the delivery.
 
-- plugin-id
-```
+Then ask the questions as the rule on clickable questions says: at most 4, only those whose answer would change the prompt, the flow, or what done looks like, the highest impact first. Each has 2 to 4 short options.
 
-Use the notes when you write. If one already covers part of the task, name it in the prompt and tell the agent to use it. Do not copy its steps into the prompt. Leave unused plugins out. When the prompt depends on one, say so next to where to paste it.
+**Never narrow the request silently.** Before sending, list for yourself every thing the user asked for and every complaint they made. Each one stays in the flow. If you would drop, shrink, or postpone one, or it conflicts with a project rule or with another request, make that one of the questions and say what they would lose. An answer to one question does not cancel a request it did not mention.
 
-## 4. Maximize
+Do not write the prompt until the answers arrive. If they arrive through the question tool, go to step 6. Otherwise end your turn here.
 
-Search the web for how people get this kind of outcome. Look for sequencing, checks, tools, and what they verify before calling it done. Prefer official docs and write-ups of real workflows. This search is about the task. The model search in section 2 does not cover it.
+## 6. Write, review, deliver
 
-Done when you can propose a flow from something you found, or you can say the search came back empty and the proposal comes from the model docs and the project.
+Read [quality.md](quality.md) now, even if you read it earlier. Write the prompt, run its review, and deliver in its format.
 
-## 5. Align
-
-Propose the flow, including ideas they did not ask for. Name what you would change from their first description, and why, from the search. Ask every question that would change the prompt, the flow, or what done looks like. Where you have a recommendation, put it in the question.
-
-Group the questions. A direct request to write the prompt still gets this turn.
-
-The prompt is the next turn's deliverable. This turn ends when they have the proposal and the questions.
-
-Write without this turn only when they explicitly say to write it without questions.
-
-## 6. Write
-
-One copyable prompt:
-
-- **Write the prompt in English** unless the user explicitly asks for another language (their chat language does not change this)
-- Shape it like the lab **and** the live page for that model
-- Goal, constraints, success criteria, output shape, when to ask vs act
-- Set reasoning with the vendor’s effort/thinking control, not fake chain-of-thought, unless the live guide says otherwise
-- Ground in the local project only if you inspected it
-
-Then give: model + effort, URLs from **this** search, the prompt, where to paste it.
-
-After the prompt, before the expected result, name every plugin or skill the prompt tells the model to use. One short line each: the id, and why this prompt names it. If it names none, say that no plugin was used and give the reason in one short line (a plain chat, or none of the enabled plugins fit this task). Same language as the expected result.
-
-Then a short **expected result** in the language the user used in this chat. A numbered list with as many items as the outcome needs, at most 5. Each item is one plain line: what they will see or have after someone runs that prompt. No jargon dump, no restating the XML.
-
-Stop unless they want a revision.
+End your turn after the delivery.

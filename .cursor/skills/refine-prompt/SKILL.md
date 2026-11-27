@@ -1,40 +1,59 @@
 ---
 name: refine-prompt
-description: Improve an existing prompt after researching the target model's current official guidance. Use when the user asks to fix, tighten, rewrite, adapt, or change a prompt they already have. Searches the best change to the prompt and the flow before editing.
+description: Improve an existing prompt after researching the target model's current official guidance. Use when the user asks to fix, tighten, rewrite, adapt, or change a prompt they already have. Diagnoses the prompt and its flow before editing, then reviews the result.
 ---
 
 # Refine a prompt
 
+## Where are you?
+
+Check this first, every turn.
+
+| Situation | Do |
+| --- | --- |
+| A fact from step 1 is missing | Step 1 |
+| All facts known, no analysis done yet | Steps 2 to 4 |
+| The user answered your proposal, or wants a change to your revision | Step 5 |
+
 ## 1. Facts
 
-Ask and stop when one of these is missing:
+1. The current prompt (pasted, or a file path)
+2. Which model will run it?
+3. Reasoning / effort level?
+4. Where will it run? (Claude Code, Cursor, Codex, or a chat with no plugins)
+5. What is wrong with it, or what should change?
+6. Is a project on this computer involved? If yes, where is it?
 
-- Which model will run it?
-- Reasoning / effort level?
-- Where will it run? (Claude Code, Cursor, Codex, or a chat with no plugins)
-- What is wrong with the current prompt, or what should change?
-- Local project involved? Path?
+Facts 2, 3, 4, and the project path come only from the user's messages, never from this machine's settings or folders.
 
-## 2. Best change
+If any is missing, ask for all the missing ones at once, as the rule on clickable questions says. If no answer comes back, end your turn. At the same time, ask for an output that disappointed them, if they have one. That output is optional.
 
-Read the matching file in `.cursor/skills/create-prompt/labs/`, then **search official docs for that exact model**. Fix stale patterns (over-specified steps, “think step by step”, generic personas, effort stuffed into prose). Live docs beat the lab file.
+## 2. Research
 
-Then sync that host's file in `.host-plugins/` the same way as [create-prompt](../create-prompt/SKILL.md) section 3. Create the file if it is missing. If a noted plugin already covers part of the task, name it in the revised prompt instead of restating its steps.
+1. Do step 2 (model guidance) of [create-prompt](../create-prompt/SKILL.md).
+2. Do step 3 (plugins) of the same file.
+3. Do step 4 (how people get this result) of the same file.
 
-Then search or analyze the best way to change the **prompt and the flow** so the task works. Look at order of work, what gets checked, and when the run stops. A sentence edit that leaves a bad sequence is unfinished. Prefer official docs and write-ups of real workflows, the same way create-prompt searches how people get the outcome.
+## 3. Diagnose
 
-Done when you can say what should change in the wording and in the flow, from that search, or you can say the search came back empty and the change comes from the model docs and the prompt in front of you.
+Read [quality.md](../create-prompt/quality.md) and run its review table on the current prompt. Also look for:
 
-## 3. Align or write
+- stale patterns for this model: over-specified steps, "think step by step", generic personas, effort written as prose
+- flow problems: wrong order of work, a missing check, no stop condition
+- steps that an enabled plugin already covers
 
-When the best flow differs from the change they named, or an open question would change the result, propose the flow and ask. Wait. The revised prompt is the next turn.
+A sentence edit that leaves a bad flow is unfinished.
 
-When the analysis confirms their change, write it.
+Done when each change you intend to make is tied to a problem you can point at in the prompt, in the disappointing output, or in a page you opened, and you have noted what already works and stays.
 
-## 4. Return
+## 4. Propose or write
 
-- What you changed and why (from the docs, not vibes)
-- The revised copyable prompt (**English** unless the user asked for another language)
-- Effort / thinking setting to use
-- After the prompt, before the expected result, every plugin or skill the prompt tells the model to use. One short line each: the id, and why this prompt names it. If it names none, say that no plugin was used and give the reason in one short line (a plain chat, or none of the enabled plugins fit this task). Same language as the expected result.
-- A short **expected result** in the language the user used in this chat. A numbered list with as many items as the outcome needs, at most 5. Each item is one plain line: what they will see or have after that prompt is run. Not a recap of the prompt.
+Go to step 5 when your analysis confirms the change they asked for and no open question would change the result.
+
+Otherwise send, in the user's language and in 20 lines or fewer, the problems found, the change to wording and flow you propose, and where the flow comes from (at most 4 lines: link and the idea taken, only from pages you opened and used; if none, say so). Then ask at most 4 questions as the rule on clickable questions says. Do not write the revision until the answers arrive. If they arrive through the question tool, go to step 5. Otherwise end your turn here.
+
+## 5. Write, review, deliver
+
+Read [quality.md](../create-prompt/quality.md) again. Revise the prompt, keeping what works and the user's intent. Run the review and deliver in its format, adding **What changed and why** right before the review result.
+
+End your turn after the delivery.
