@@ -1,25 +1,20 @@
 <div align="center">
 
-<h1>Prompt Generator</h1>
+<h1 align="center">Prompt Workshop</h1>
 
-<h3>Your idea, shaped for the model that will run it.</h3>
-
-A Cursor workspace that researches your target model, agrees the plan with you,</br> then writes and reviews a ready-to-paste prompt.
-
-**Designed to be run by mid-tier models**. You do not need a top-tier model to use it.
-
-<br>
+<h3 align="center">Your idea, shaped for the model that will run it.</h3>
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-1F5C86.svg)](./LICENSE)
 [![Runs in Cursor](https://img.shields.io/badge/runs%20in-Cursor-1E1B17.svg)](https://cursor.com)
+[![Built for mid-tier models](https://img.shields.io/badge/built%20for-mid--tier%20models-B4541A.svg)](#why-prompt-workshop)
 
-[Why](#why-prompt-generator)&nbsp;&nbsp;|&nbsp;&nbsp;[How it works](#how-it-works)&nbsp;&nbsp;|&nbsp;&nbsp;[Quick start](#quick-start)&nbsp;&nbsp;|&nbsp;&nbsp;[What you get](#what-you-get)&nbsp;&nbsp;|&nbsp;&nbsp;[Models](#supported-models)&nbsp;&nbsp;|&nbsp;&nbsp;[Layout](#repository-layout)
+[Why](#why-prompt-workshop)&nbsp;&nbsp;|&nbsp;&nbsp;[How it works](#how-it-works)&nbsp;&nbsp;|&nbsp;&nbsp;[Quick start](#quick-start)&nbsp;&nbsp;|&nbsp;&nbsp;[What you get](#what-you-get)&nbsp;&nbsp;|&nbsp;&nbsp;[Models](#supported-models)&nbsp;&nbsp;|&nbsp;&nbsp;[Layout](#repository-layout)
 
 </div>
 
 ---
 
-## Why Prompt Generator
+## Why Prompt Workshop
 
 Each model family wants its prompts written differently, and the advice changes with every release. This workspace turns what you say in plain language into a prompt that fits the exact model you name.
 
@@ -33,12 +28,12 @@ It is a set of Cursor rules and skills, not an application: there is nothing to 
 
 ## How it works
 
-```mermaid
-flowchart LR
-    A[Facts] --> B[Research] --> C[Proposal and questions]
-    C -->|your answers| D[Write] --> E[Review] --> F[Delivery]
-    E -->|a check fails| D
-```
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/how-it-works-dark.svg">
+    <img src="docs/assets/how-it-works-light.svg" alt="Facts, research, align, write, review, delivery. A failed check goes back to write." width="100%">
+  </picture>
+</p>
 
 | Step | What happens |
 | --- | --- |
@@ -63,10 +58,10 @@ Asking to "write it now" still gets the alignment step. To skip it, say explicit
 ### Setup
 
 ```bash
-git clone https://github.com/oriolescserr/prompt-generator.git
+git clone https://github.com/oriolescserr/prompt-workshop.git
 ```
 
-Open the `prompt-generator` folder as your Cursor workspace, pick a mid-tier model, and set its effort to `high` in the model picker.
+Open the `prompt-workshop` folder as your Cursor workspace, pick a mid-tier model, and set its effort to `high` in the model picker.
 
 ### Ask
 

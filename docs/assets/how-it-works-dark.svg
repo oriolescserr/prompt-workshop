@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="150" viewBox="0 0 900 150" role="img" aria-label="Facts, research, align, write, review, delivery. A failed check goes back to write." font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" text-anchor="middle">
+<rect x="1" y="16" width="128" height="76" rx="10" fill="#161B22" stroke="#30363D"/>
+<text x="65.0" y="52" font-size="16" font-weight="600" fill="#F0F6FC">Facts</text>
+<text x="65.0" y="71" font-size="11" fill="#9198A1">model, effort, host</text>
+<path d="M133 54.0H149M145 50.0L150 54.0L145 58.0" fill="none" stroke="#9198A1" stroke-width="1.5"/>
+<rect x="155" y="16" width="128" height="76" rx="10" fill="#161B22" stroke="#30363D"/>
+<text x="219.0" y="52" font-size="16" font-weight="600" fill="#F0F6FC">Research</text>
+<text x="219.0" y="71" font-size="11" fill="#9198A1">docs and workflows</text>
+<path d="M287 54.0H303M299 50.0L304 54.0L299 58.0" fill="none" stroke="#9198A1" stroke-width="1.5"/>
+<rect x="309" y="16" width="128" height="76" rx="10" fill="#161B22" stroke="#30363D"/>
+<text x="373.0" y="52" font-size="16" font-weight="600" fill="#F0F6FC">Align</text>
+<text x="373.0" y="71" font-size="11" fill="#9198A1">flow and questions</text>
+<path d="M441 54.0H457M453 50.0L458 54.0L453 58.0" fill="none" stroke="#9198A1" stroke-width="1.5"/>
+<rect x="463" y="16" width="128" height="76" rx="10" fill="#161B22" stroke="#30363D"/>
+<text x="527.0" y="52" font-size="16" font-weight="600" fill="#F0F6FC">Write</text>
+<text x="527.0" y="71" font-size="11" fill="#9198A1">one prompt</text>
+<path d="M595 54.0H611M607 50.0L612 54.0L607 58.0" fill="none" stroke="#9198A1" stroke-width="1.5"/>
+<rect x="617" y="16" width="128" height="76" rx="10" fill="#161B22" stroke="#30363D"/>
+<text x="681.0" y="52" font-size="16" font-weight="600" fill="#F0F6FC">Review</text>
+<text x="681.0" y="71" font-size="11" fill="#9198A1">fixed checklist</text>
+<path d="M749 54.0H765M761 50.0L766 54.0L761 58.0" fill="none" stroke="#9198A1" stroke-width="1.5"/>
+<rect x="771" y="16" width="128" height="76" rx="10" fill="#161B22" stroke="#30363D"/>
+<text x="835.0" y="52" font-size="16" font-weight="600" fill="#F0F6FC">Delivery</text>
+<text x="835.0" y="71" font-size="11" fill="#9198A1">ready to paste</text>
+<path d="M681.0 94V112Q681.0 120 673.0 120H535.0Q527.0 120 527.0 112V98M523.0 103L527.0 97L531.0 103" fill="none" stroke="#E8894A" stroke-width="1.5"/>
+<text x="604.0" y="140" font-size="11" fill="#E8894A">a check fails</text>
+</svg>
